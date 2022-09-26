@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 
-import { Drawer, LinearProgress, Grid, Badge, } from "@mui/material";
+import { Drawer, LinearProgress, Grid, Badge, Typography, } from "@mui/material";
 import { AddShoppingCart } from '@mui/icons-material';
+
+// styles
+import { Wrapper } from "./App.styles";
 
 // types
 export type CartItemType = {
@@ -21,14 +24,20 @@ const getProducts = async (): Promise<CartItemType[]> =>
   await (await fetch("https://fakestoreapi.com/products")).json();
 
 
-const App = () => {
+  const App = () => {
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     "products", 
     getProducts
   );
-  console.log(isLoading);  
-  console.log(data);
-  console.log(error);
+
+  const getTotalItems = () => null;
+
+  const handleAddToCart = () => null;
+
+  const handleRemoveFromCart = () => null;
+
+  if (isLoading) return <LinearProgress />;
+  if (error) return <Typography>Something went wrong...</Typography>
 
   return (
     <div className="App">
