@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 
+// library
 import { Drawer, LinearProgress, Grid, Badge, Typography, } from "@mui/material";
 import { AddShoppingCart } from '@mui/icons-material';
+
+//Components
+import  { Item } from "./components/Item/item";
 
 // styles
 import { Wrapper } from "./App.styles";
@@ -16,7 +20,6 @@ export type CartItemType = {
   price: number;
   title: string;
   amount: number;
-
 }
 
 
@@ -32,7 +35,7 @@ const getProducts = async (): Promise<CartItemType[]> =>
 
   const getTotalItems = () => null;
 
-  const handleAddToCart = () => null;
+  const handleAddToCart = (clickedItem: CartItemType) => null;
 
   const handleRemoveFromCart = () => null;
 
@@ -40,9 +43,15 @@ const getProducts = async (): Promise<CartItemType[]> =>
   if (error) return <Typography>Something went wrong...</Typography>
 
   return (
-    <div className="App">
-      Start
-    </div>
+    <Wrapper>
+      <Grid container spacing={3}>
+        {data?.map((item => (
+          <Grid item key={item.id} xs={12} sm={4}>
+            <Item item={item} handleAddToCart={handleAddToCart } />
+          </Grid>
+        )))}
+      </Grid>
+    </Wrapper>
   );
 }
 
