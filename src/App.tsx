@@ -7,6 +7,7 @@ import { AddShoppingCart } from '@mui/icons-material';
 
 //Components
 import  { Item } from "./components/Item/item";
+import { Cart } from "./components/Cart/Cart";
 
 // styles
 import { Wrapper, StyledButton } from "./App.styles";
@@ -35,7 +36,8 @@ const getProducts = async (): Promise<CartItemType[]> =>
       getProducts
     );
 
-    const getTotalItems = (items: CartItemType[]) => null;
+    const getTotalItems = (items: CartItemType[]) => 
+      items.reduce((ack: number, item) => ack + item.amount, 0);
 
     const handleAddToCart = (clickedItem: CartItemType) => null;
 
@@ -47,7 +49,11 @@ const getProducts = async (): Promise<CartItemType[]> =>
     return (
       <Wrapper>
         <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)} >
-          Cart goes here
+          <Cart 
+            cartItems={cartItems} 
+            addToCart={handleAddToCart}
+            removeFromCart={handleRemoveFromCart}  
+          />
         </Drawer>
         <StyledButton onClick={() => setCartOpen(true)} >
           <Badge badgeContent={getTotalItems(cartItems)} color='error'></Badge>
