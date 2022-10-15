@@ -9,7 +9,7 @@ import { AddShoppingCart } from '@mui/icons-material';
 import  { Item } from "./components/Item/item";
 
 // styles
-import { Wrapper } from "./App.styles";
+import { Wrapper, StyledButton } from "./App.styles";
 
 // types
 export type CartItemType = {
@@ -28,31 +28,40 @@ const getProducts = async (): Promise<CartItemType[]> =>
 
 
   const App = () => {
-  const { data, isLoading, error } = useQuery<CartItemType[]>(
-    "products", 
-    getProducts
-  );
+    const [cartOpen, setCartOpen] = useState(false);
+    const [cartItems, setCartItems] = useState([] as CartItemType[])
+    const { data, isLoading, error } = useQuery<CartItemType[]>(
+      "products", 
+      getProducts
+    );
 
-  const getTotalItems = () => null;
+    const getTotalItems = (items: CartItemType[]) => null;
 
-  const handleAddToCart = (clickedItem: CartItemType) => null;
+    const handleAddToCart = (clickedItem: CartItemType) => null;
 
-  const handleRemoveFromCart = () => null;
+    const handleRemoveFromCart = () => null;
 
-  if (isLoading) return <LinearProgress />;
-  if (error) return <Typography>Something went wrong...</Typography>
+    if (isLoading) return <LinearProgress />;
+    if (error) return <Typography>Something went wrong...</Typography>
 
-  return (
-    <Wrapper>
-      <Grid container spacing={3}>
-        {data?.map((item => (
-          <Grid item key={item.id} xs={12} sm={4}>
-            <Item item={item} handleAddToCart={handleAddToCart } />
-          </Grid>
-        )))}
-      </Grid>
-    </Wrapper>
-  );
+    return (
+      <Wrapper>
+        <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)} >
+          Cart goes here
+        </Drawer>
+        <StyledButton onClick={() => setCartOpen(true)} >
+          <Badge badgeContent={getTotalItems(cartItems)} color='error'></Badge>
+          <AddShoppingCart />
+        </StyledButton>
+        <Grid container spacing={3}>
+          {data?.map((item => (
+            <Grid item key={item.id} xs={12} sm={4}>
+              <Item item={item} handleAddToCart={handleAddToCart } />
+            </Grid>
+          )))}
+        </Grid>
+      </Wrapper>
+    );
 }
 
 export default App;
